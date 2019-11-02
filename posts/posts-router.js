@@ -29,7 +29,7 @@ router.get("/:id",(req,res) => {
 router.post("/",(req,res) => {
     const postInfo = req.body
     if(!postInfo.title || !postInfo.contents) {
-        res.status(400).json({errorMessage:"Please provide title and contents for the post"})
+        res.status(400).json({errorMessage:"Please provide title and/or contents for the post"})
     } else {
         Posts.insert(postInfo) 
         .then(post => {
@@ -40,5 +40,20 @@ router.post("/",(req,res) => {
     })
     }
 })
+
+router.delete("/:id", (req,res) => {
+    Posts.remove(req.params.id) 
+    .then(delPost => {
+        if(delPost>0) {
+            res.status(200).json({message:"The post has been deleted."})
+        } else {
+            res.status(404).json({message:"The post with the specified ID does not exist."})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({message:"The post couldnot be removed."})
+    })
+})
+
 
 module.exports = router
