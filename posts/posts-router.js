@@ -26,4 +26,19 @@ router.get("/:id",(req,res) => {
     })
 })
 
+router.post("/",(req,res) => {
+    const postInfo = req.body
+    if(!postInfo.title || !postInfo.contents) {
+        res.status(400).json({errorMessage:"Please provide title and contents for the post"})
+    } else {
+        Posts.insert(postInfo) 
+        .then(post => {
+            res.status(201).json(post)
+        })
+    .catch(err => {
+        res.status(500).json({error: "There was an error while saving the post to the database."})
+    })
+    }
+})
+
 module.exports = router
