@@ -13,12 +13,14 @@ router.get("/" ,(req,res) => {
 })
 
 router.get("/:id",(req,res) => {
-    Posts.findById(req.params.id)
+    const{id} = req.params
+    
+    Posts.findById(id)
     .then(post => {
         if(post) {
             res.status(200).json(post)
         } else {
-            res.status(404).json({message:"The post with the specified ID does not exist"})
+            res.status(404).json({message:`The post with ID# ${id} does not exist`})
         }
     })
     .catch(err => {
@@ -42,12 +44,13 @@ router.post("/",(req,res) => {
 })
 
 router.delete("/:id", (req,res) => {
-    Posts.remove(req.params.id) 
+    const {id} = req.params
+    Posts.remove(id) 
     .then(delPost => {
         if(delPost>0) {
             res.status(200).json({message:"The post has been deleted."})
         } else {
-            res.status(404).json({message:"The post with the specified ID does not exist."})
+            res.status(404).json({message:`The post with ID# ${id} does not exist.`})
         }
     })
     .catch(err => {
@@ -66,7 +69,7 @@ router.put("/:id",(req,res) => {
              if(post) {
                  res.status(200).json({message:`The post with Id# ${id} has been updated`})
              } else {
-                 res.status(404).json({errorMessage:"The post with the specified ID does not exist."})
+                 res.status(404).json({errorMessage:`The post with Id# ${id} does not exist.`})
              }
          })
          .catch(err => {
@@ -74,4 +77,6 @@ router.put("/:id",(req,res) => {
          })
      }
 })
+
+
 module.exports = router
