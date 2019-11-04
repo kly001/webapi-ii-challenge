@@ -2,7 +2,7 @@ const express = require("express");
 const postsRouter = require("./posts/posts-router.js")
 const server = express();
 
-const PORT = process.env.PORT ||4321;
+const PORT = process.env.PORT ||4343;
 
 server.use(express.json());
 server.use("/api/posts", postsRouter)
