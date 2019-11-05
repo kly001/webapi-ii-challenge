@@ -81,18 +81,35 @@ router.put("/:id",(req,res) => {
 router.get("/:id/comments",(req,res) => {
     const{id} = req.params
 
+    Posts.findPostComments(id)
+    .then(post => {
+        if(post.length>0) {
+            res.status(200).json(post)
+        } else {
+            res.status(404).json({message:`The comment with ID# ${id} does not exist`})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({message: "The comment information could not be retrieved."})
+    })
+})
+
+router.get("/:id/comment",(req,res) => {
+    const{id} = req.params
+
     Posts.findCommentById(id)
     .then(post => {
         if(post.length>0) {
             res.status(200).json(post)
         } else {
-            res.status(404).json({message:`The post comment with ID# ${id} does not exist`})
+            res.status(404).json({message:`The comment with ID# ${id} does not exist`})
         }
     })
     .catch(err => {
-        res.status(500).json({message: "The comments information could not be retrieved."})
+        res.status(500).json({message: "The comment information could not be retrieved."})
     })
 })
+
 
 
 module.exports = router
