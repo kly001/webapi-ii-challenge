@@ -14,10 +14,10 @@ router.get("/" ,(req,res) => {
 
 router.get("/:id",(req,res) => {
     const{id} = req.params
-    
+
     Posts.findById(id)
     .then(post => {
-        if(post) {
+        if(post.length>0) {
             res.status(200).json(post)
         } else {
             res.status(404).json({message:`The post with ID# ${id} does not exist`})
@@ -76,6 +76,22 @@ router.put("/:id",(req,res) => {
              res.status(500).json({err:"The post information could not be modified."})
          })
      }
+})
+
+router.get("/:id/comments",(req,res) => {
+    const{id} = req.params
+
+    Posts.findCommentById(id)
+    .then(post => {
+        if(post.length>0) {
+            res.status(200).json(post)
+        } else {
+            res.status(404).json({message:`The post comment with ID# ${id} does not exist`})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({message: "The comments information could not be retrieved."})
+    })
 })
 
 
